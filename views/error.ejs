@@ -1,0 +1,14 @@
+
+<% layout('layouts/boilerplate'); %>
+
+<div class="container text-center mt-5">
+  <h1 class="text-danger display-4">
+    <%= err.statusCode || 500 %> - Something went wrong!
+  </h1>
+
+  <p class="lead text-muted">
+    <%= err.message || "Oops! Something broke. Please try again later." %>
+  </p>
+
+  <a href="/listings" class="btn btn-outline-primary mt-4">⬅ Back to Listings</a>
+</div>

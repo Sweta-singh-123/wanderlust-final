@@ -1,19 +1,55 @@
-<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-regular fa-compass"></i></a>
-    <button class="navbar-toggler" 
-    type="button" 
-    data-bs-toggle="collapse" 
-    data-bs-target="#navbarNavAltMarkup" 
-    >
-    </span class="navbar-toggler-icon"></span>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top d-flex align-items-center" style="height: 80px;">
+  <div class="mx-auto d-flex align-items-center w-100" style="max-width: 1351px; height: 80px; padding: 0 1rem;">
+
+    <!-- Left: Brand -->
+    <a class="navbar-brand fw-bold fs-4 mb-0" href="/">
+      <i class="fa-regular fa-compass me-1"></i> Explore
+    </a>
+
+    <!-- Mobile toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/Listings">All Listings</a>
-        <a class="nav-link" href="/Listings/new">Add new Listings</a>
+
+    <!-- Navbar Content -->
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+
+      <!-- Center: Search Form -->
+      <form action="/listings" method="GET"
+        class="d-none d-lg-flex mx-auto align-items-center"
+        style="gap: 0.5rem; background: transparent; border: none; box-shadow: none; margin-bottom: 0;">
+        <input 
+          name="location"
+          class="form-control rounded-pill border px-3 py-2"
+          type="search"
+          placeholder="Search by location (e.g., India, USA)"
+          aria-label="Search"
+          style="width: 280px; outline: none; background-color: #f8f8f8;"
+          value="<%= typeof location !== 'undefined' ? location : '' %>"
+        />
+        <button class="btn btn-danger px-3 py-2 rounded-pill" type="submit">Search</button>
+      </form>
+
+      <!-- Right: Links -->
+      <div class="navbar-nav ms-auto align-items-center">
+        <a class="nav-link fw-semibold me-3" href="#">Airbnb your home</a>
+
+         <!-- ✅ My Favorites link -->
+        <li class="nav-item">
+          <a class="nav-link" href="/favorites">❤️ My Favorites</a>
+        </li>
+
+        <% if (!currentUser) { %>
+          <a class="nav-link" href="/register">Sign Up</a>
+          <a class="nav-link" href="/login">Login</a>
+        <% } else { %>
+          <span class="nav-link">Welcome, <%= currentUser.username %>!</span>
+          <a class="nav-link text-danger" href="/logout">Logout</a>
+        <% } %>
       </div>
     </div>
   </div>
 </nav>
+
+

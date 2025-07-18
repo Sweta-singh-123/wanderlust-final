@@ -1,39 +1,170 @@
-
 <% layout('layouts/boilerplate') %>
 
-<h3>All Listings</h3>
-<form method="GET" action="/listings/new">
-  <button>Create New Listing</button>
-</form>
-<!-- card -->
- <div class="row row-cols-lg-3 row-cols-mid-2 row-cols-sm-1">
-    <% for(let listing of allListings) { %>
-      <!-- <a href="/listings/ <%= listing._id %>" class="listing-link"> -->
-        <a href="/listings/<%= listing._id.toString().trim() %>" class="listing-link" >
+<!-- Categories Bar -->
+<div class="container-fluid px-4 pt-3 pb-2 border-bottom sticky-top bg-white" style="z-index: 1000;">
+  <div class="d-flex justify-content-between align-items-center flex-wrap">
+    <div class="d-flex align-items-start flex-wrap gap-3 flex-grow-1">
+      <% const categories = [
+        { icon: "🔥", label: "Trending" },
+        { icon: "🏙️", label: "Iconic Cities" },
+        { icon: "⛰️", label: "Mountain" },
+        { icon: "🏰", label: "Castle" },
+        { icon: "🏊", label: "Amazing Pool" },
+        { icon: "🏕️", label: "Camping" },
+        { icon: "🌾", label: "Farm" },
+        { icon: "🏚️", label: "Domes" },
+        { icon: "🛶", label: "Boat" },
+        { icon: "❄️", label: "Arctic" }
+      ]; %>
+      <% categories.forEach(c => { %>
+        <div class="text-center px-1" style="min-width: 55px;">
+          <div class="fs-6"><%= c.icon %></div>
+          <small class="text-muted"><%= c.label %></small>
+        </div>
+      <% }) %>
+    </div>
 
-<div class="card col" >
-  <img src="<%= listing.image.url %>" class="card-img-top" alt="listing image" style="height: 20rem">
-    <div class="card-img-overlay"></div>
-
-  <div class="card-body">
-   <p class="card-text">
-    <b><%= listing.title %></b>, <br>
-    &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
-  </p>
+    <div class="d-flex align-items-center gap-1 mt-2 mt-md-0">
+      <span class="small">Display total before taxes</span>
+      <label class="switch mb-0">
+        <input type="checkbox" id="toggleTaxes" />
+        <span class="slider round"></span>
+      </label>
+    </div>
   </div>
 </div>
-</a>
- <% } %>
- 
 
- </div>
+<!-- Listings Section -->
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold">All Listings</h3>
+    <a href="/listings/new" class="btn btn-danger rounded-3 px-4 py-2 shadow-sm">
+       Create New Listing
+    </a>
+  </div>
 
-<!-- <ul>
-  <% for(let listing of allListings) { %>
-    <li><a href="/listings/<%= listing._id %>"> <%= listing.title %> </a></li>
-    <li><a href="/listings/<%= listing._id %>"> <%= listing.title %> </a></li>
+  <% if (listings.length === 0) { %>
+    <div class="alert alert-info text-center">
+      No listings available yet. Click "Create New Listing" to add one!
+    </div>
+  <% } else { %>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+      <% listings.forEach(listing => { %>
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0 position-relative listing-card">
+
+            <!-- Favorite Heart Button -->
+            <% if (currentUser) { %>
+              <button 
+                class="favorite-btn position-absolute top-0 end-0 m-2 border-0 bg-transparent" 
+                data-id="<%= listing._id %>"
+                style="z-index:10;"
+              >
+                <% const isFavorited = currentUser?.favorites?.some(fav => fav.equals(listing._id)); %>
+                <i class="fa-<%= isFavorited ? 'solid' : 'regular' %> fa-heart fs-5 text-danger"></i>
+              </button>
+            <% } %>
+
+            <!-- Listing Card Content -->
+            <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+              <img 
+                src="<%= listing.image?.url || 'https://via.placeholder.com/400x300?text=No+Image' %>" 
+                class="card-img-top" 
+                alt="Listing image"
+                style="height: 16rem; object-fit: cover;"
+              >
+              <div class="card-body">
+                <h5 class="card-title mb-1"><%= listing.title %></h5>
+                <p class="card-text text-muted mb-0">
+                  ₹ <%= typeof listing.price === 'number' ? listing.price.toLocaleString("en-IN") : 'N/A' %> / night
+                </p>
+                <small class="text-muted"><%= listing.location %>, <%= listing.country %></small>
+              </div>
+            </a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
   <% } %>
-</ul> -->
+</div>
 
+<!-- Instant Favorite Toggle -->
+<script>
+  document.querySelectorAll(".favorite-btn").forEach(button => {
+    button.addEventListener("click", async function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const listingId = this.dataset.id;
 
+      try {
+        const res = await fetch(`/listings/${listingId}/favorite`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        });
 
+        if (res.ok) {
+          const icon = this.querySelector("i");
+          icon.classList.toggle("fa-solid");
+          icon.classList.toggle("fa-regular");
+        } else {
+          alert("Please log in to favorite listings.");
+        }
+      } catch (err) {
+        console.error("Error favoriting listing:", err);
+      }
+    });
+  });
+
+  // Display tax toggle alert
+  document.getElementById('toggleTaxes')?.addEventListener('change', e => {
+    alert("Display total before taxes " + (e.target.checked ? "ON" : "OFF"));
+  });
+</script>
+
+<!-- Styles -->
+<style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 18px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 18px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #2196F3;
+}
+input:checked + .slider:before {
+  transform: translateX(18px);
+}
+
+/* Card hover effect */
+.listing-card:hover {
+  transform: translateY(-2px);
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+</style>

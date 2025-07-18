@@ -1,85 +1,115 @@
-
-
 <% layout('layouts/boilerplate') %>
 
-<div class="row">
-  <div class="col-8 offset-2">
-    <h3 class="mb-4">Edit Your Listing</h3>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">✏️ Edit Listing</h2>
 
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT">
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          name="listing[title]"
-          value="<%= listing.title %>"
-          required
-        />
+          <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+            <!-- Title -->
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input
+                type="text"
+                name="listing[title]"
+                id="title"
+                class="form-control"
+                value="<%= listing.title || '' %>"
+                required
+              />
+              <div class="invalid-feedback">Please enter a title.</div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea
+                name="listing[description]"
+                id="description"
+                class="form-control"
+                rows="3"
+              ><%= listing.description || '' %></textarea>
+            </div>
+
+            <!-- Image URL -->
+            <div class="mb-3">
+              <label for="image" class="form-label">Image URL</label>
+              <input
+                type="url"
+                name="listing[image]"
+                id="image"
+                class="form-control"
+                value="<%= listing.image && listing.image.url ? listing.image.url : '' %>"
+              />
+            </div>
+
+            <!-- Price -->
+            <div class="mb-3">
+              <label for="price" class="form-label">Price (₹)</label>
+              <input
+                type="number"
+                name="listing[price]"
+                id="price"
+                class="form-control"
+                value="<%= listing.price %>"
+                min="0"
+                required
+              />
+              <div class="invalid-feedback">Please enter a valid price.</div>
+            </div>
+
+            <!-- Location -->
+            <div class="mb-3">
+              <label for="location" class="form-label">Location</label>
+              <input
+                type="text"
+                name="listing[location]"
+                id="location"
+                class="form-control"
+                value="<%= listing.location || '' %>"
+              />
+            </div>
+
+            <!-- Country -->
+            <div class="mb-3">
+              <label for="country" class="form-label">Country</label>
+              <input
+                type="text"
+                name="listing[country]"
+                id="country"
+                class="form-control"
+                value="<%= listing.country || '' %>"
+              />
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between">
+              <a href="/listings/<%= listing._id %>" class="btn btn-secondary">⬅ Cancel</a>
+              <button type="submit" class="btn btn-success">✅ Update</button>
+            </div>
+          </form>
+        </div>
       </div>
-
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea
-          class="form-control"
-          id="description"
-          name="listing[description]"
-          rows="4"
-          required
-        ><%= listing.description %></textarea>
-      </div>
-
-      <div class="mb-3">
-        <label for="price" class="form-label">Price (₹)</label>
-        <input
-          type="number"
-          class="form-control"
-          id="price"
-          name="listing[price]"
-          value="<%= listing.price %>"
-          required
-        />
-      </div>
-
-      <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input
-          type="text"
-          class="form-control"
-          id="location"
-          name="listing[location]"
-          value="<%= listing.location %>"
-          required
-        />
-      </div>
-
-      <div class="mb-3">
-        <label for="country" class="form-label">Country</label>
-        <input
-          type="text"
-          class="form-control"
-          id="country"
-          name="listing[country]"
-          value="<%= listing.country %>"
-          required
-        />
-      </div>
-
-      <div class="mb-3">
-        <label for="image" class="form-label">Image URL</label>
-        <input
-          type="text"
-          class="form-control"
-          id="image"
-          name="listing[image][url]"
-          value="<%= listing.image ? listing.image.url : '' %>"
-        />
-      </div>
-
-      <button type="submit" class="btn btn-primary">Update Listing</button>
-      <a href="/listings/<%= listing._id %>" class="btn btn-secondary ms-2">Cancel</a>
-    </form>
+    </div>
   </div>
 </div>
+
+<!-- Optional: Bootstrap validation script -->
+<script>
+  (() => {
+    'use strict';
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  })();
+</script>
 

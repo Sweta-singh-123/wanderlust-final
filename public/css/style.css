@@ -73,6 +73,7 @@ align-items: space-evenly;
   width: 100%;
   object-fit: cover;
 }
+
 .card-body{
   padding: 0 !important;
 }
@@ -102,4 +103,81 @@ align-items: space-evenly;
   padding-left: 0;
   padding-right: 0;
 }
+
+footer a.text-muted:hover {
+  color: #0d6efd; /* Bootstrap primary color */
+  text-decoration: none;
+}
+/* this is the style of login and register page */
+
+form {
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+}
+
+input:focus {
+  border-color: #ff385c;
+  box-shadow: 0 0 0 0.2rem rgba(255, 56, 92, 0.25);
+}
+
+.btn-primary {
+  background-color: #ff385c;
+  border-color: #ff385c;
+}
+
+.btn-primary:hover {
+  background-color: #e03150;
+  border-color: #e03150;
+}
+/* fav button */
+.btn-heart {
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  padding: 0.3rem 0.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+.btn-heart:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 1);
+}
+
+.favorite-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.favorite-btn:focus {
+  outline: none;
+}
+
+/* Smooth hover effect for listing cards */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+/* Image zoom on hover */
+.card img {
+  transition: transform 0.3s ease;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
 
