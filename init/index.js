@@ -1,10 +1,8 @@
-
-
 const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const MONGO_URL = "mongodb+srv://sweta:SafeP%40ss2025%21%24@cluster0.if7zvxw.mongodb.net/wanderlust?retryWrites=true&w=majority";
 
 main()
   .then(() => {
@@ -25,6 +23,3 @@ const initDB = async () => {
 };
 
 initDB();
-
-
-

@@ -1,30 +1,4 @@
-// const express = require("express");
-// const router = express.Router();
-// const userController = require("../controllers/userController");
-// const passport = require("passport");
 
-// // Register routes
-// router
-//   .route("/register")
-//   .get(userController.renderRegisterForm)
-//   .post(userController.registerUser);
-
-// // Login routes
-// router
-//   .route("/login")
-//   .get(userController.renderLoginForm)
-//   .post(
-//     passport.authenticate("local", {
-//       failureRedirect: "/login",
-//       failureFlash: true,
-//     }),
-//     userController.loginUser
-//   );
-
-// // Logout
-// router.get("/logout", userController.logoutUser);
-
-// module.exports = router;
 
 const express = require("express");
 const router = express.Router();
@@ -79,6 +53,5 @@ router.get("/logout", (req, res, next) => {
 });
 
 module.exports = router;
-
 
 
